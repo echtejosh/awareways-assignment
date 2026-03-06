@@ -1,0 +1,29 @@
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+
+# Root-local or generated files
+Data-driven PHP developer.pdf
+
+# Laravel API generated files
+api/.env
+api/vendor/
+api/node_modules/
+api/storage/*.key
+api/storage/logs/
+api/storage/framework/cache/
+api/storage/framework/sessions/
+api/storage/framework/views/
+api/public/build/
+api/public/hot
+api/database/database.sqlite
+api/.phpunit.result.cache
+
+# Vite / UI generated files
+ui/node_modules/
+ui/dist/
+ui/artifacts/
+ui/.env.local
+ui/.env.*.local

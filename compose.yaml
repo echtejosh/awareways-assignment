@@ -1,0 +1,43 @@
+services:
+    api:
+        build:
+            context: ./api
+            dockerfile: Dockerfile
+        working_dir: /var/www
+        volumes:
+            - ./api:/var/www
+        ports:
+            - "127.0.0.1:8001:8000"
+        healthcheck:
+            test: ["CMD", "php", "-r", "exit(@fsockopen('127.0.0.1', 8000) ? 0 : 1);"]
+            interval: 5s
+            timeout: 3s
+            retries: 10
+            start_period: 10s
+        command: sh -c "composer install --no-interaction && php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\" && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000"
+
+    ui:
+        build:
+            context: ./ui
+            dockerfile: Dockerfile
+            target: dev
+        working_dir: /app
+        volumes:
+            - ./ui:/app
+            - ui-node-modules:/app/node_modules
+        environment:
+            - VITE_API_BASE_URL=http://127.0.0.1:8001/api
+            - VITE_API_PROXY_TARGET=http://api:8000
+            - CHOKIDAR_USEPOLLING=true
+            - CHOKIDAR_INTERVAL=200
+            - VITE_HMR_HOST=localhost
+            - VITE_HMR_PORT=5173
+        ports:
+            - "127.0.0.1:5173:5173"
+        depends_on:
+            api:
+                condition: service_healthy
+        command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 5173"
+
+volumes:
+    ui-node-modules:
