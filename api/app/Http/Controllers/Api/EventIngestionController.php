@@ -11,8 +11,14 @@ use App\Http\Requests\Api\IngestEventRequest;
 use App\Http\Resources\Api\ActivityResource;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * HTTP entry point for accepting a single activity event payload.
+ */
 final class EventIngestionController extends Controller
 {
+    /**
+     * Validates the request, records the event, and returns the persisted representation.
+     */
     public function __invoke(
         IngestEventRequest $request,
         IngestEvent $ingestEvent,

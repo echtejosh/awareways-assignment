@@ -6,6 +6,9 @@ namespace App\Infrastructure\Persistence\Eloquent\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Eloquent persistence model for raw activity events.
+ */
 final class ActivityEventModel extends Model
 {
     protected $table = 'activity_events';
@@ -35,4 +38,3 @@ final class ActivityEventModel extends Model
         'ingested_at' => 'immutable_datetime',
     ];
 }
-

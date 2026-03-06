@@ -8,8 +8,14 @@ use App\Domain\Events\Contracts\EventIngestionRepository;
 use App\Domain\Events\Entities\ActivityEvent;
 use App\Infrastructure\Persistence\Eloquent\Models\ActivityEventModel;
 
+/**
+ * Stores domain activity events in the activity_events table without re-shaping them.
+ */
 final readonly class EloquentEventIngestionRepository implements EventIngestionRepository
 {
+    /**
+     * Writes the event record and returns the original domain entity unchanged.
+     */
     public function save(ActivityEvent $event): ActivityEvent
     {
         ActivityEventModel::query()->create([
@@ -24,4 +30,3 @@ final readonly class EloquentEventIngestionRepository implements EventIngestionR
         return $event;
     }
 }
-

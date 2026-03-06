@@ -10,6 +10,9 @@ use App\Domain\Events\ValueObjects\Uuid;
 use DateTimeImmutable;
 use DateTimeZone;
 
+/**
+ * Coordinates the recent-activity read model for a single user.
+ */
 final readonly class ListRecentActivities
 {
     public function __construct(
@@ -18,6 +21,8 @@ final readonly class ListRecentActivities
     }
 
     /**
+     * Normalizes request filters and returns the recent activity slice.
+     *
      * @return array<int, \App\Domain\Events\Entities\ActivityEvent>
      */
     public function __invoke(ActivityQuery $query): array
@@ -30,9 +35,11 @@ final readonly class ListRecentActivities
         );
     }
 
+    /**
+     * Ensures optional filter timestamps are evaluated in UTC.
+     */
     private static function toUtcDateTime(string $value): DateTimeImmutable
     {
         return (new DateTimeImmutable($value))->setTimezone(new DateTimeZone('UTC'));
     }
 }
-

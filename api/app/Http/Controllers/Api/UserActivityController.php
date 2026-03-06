@@ -16,8 +16,14 @@ use App\Http\Resources\Api\ActivityResource;
 use App\Http\Resources\Api\MetricsResource;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * Serves the read-only dashboard endpoints for activities and engagement metrics.
+ */
 final class UserActivityController extends Controller
 {
+    /**
+     * Returns recent activities plus the applied query metadata.
+     */
     public function activities(
         string $user_id,
         ActivitiesRequest $request,
@@ -47,6 +53,9 @@ final class UserActivityController extends Controller
         ]);
     }
 
+    /**
+     * Returns the aggregate metrics model for the selected user and date window.
+     */
     public function metrics(
         string $user_id,
         MetricsRequest $request,

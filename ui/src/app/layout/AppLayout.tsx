@@ -12,6 +12,9 @@ import {
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { DashboardTopbarFilters } from "@/features/dashboard/components/DashboardTopbarFilters"
 
+/**
+ * Preserves the selected user scope when linking back to the dashboard root.
+ */
 function userQuerySearch(userId: string): string {
   if (!userId) {
     return ""
@@ -21,6 +24,9 @@ function userQuerySearch(userId: string): string {
   return `?${params.toString()}`
 }
 
+/**
+ * Shared shell for the sidebar, breadcrumb header, and page container.
+ */
 export function AppLayout() {
   const location = useLocation()
   const [searchParams] = useSearchParams()

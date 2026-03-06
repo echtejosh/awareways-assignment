@@ -11,6 +11,8 @@ use DateTimeImmutable;
 interface EventReadRepository
 {
     /**
+     * Returns the most recent activity slice for a user within an optional time window.
+     *
      * @return array<int, \App\Domain\Events\Entities\ActivityEvent>
      */
     public function listRecentActivities(
@@ -20,6 +22,9 @@ interface EventReadRepository
         int $limit,
     ): array;
 
+    /**
+     * Builds the aggregate metrics view consumed by the dashboard summary cards.
+     */
     public function getEngagementMetrics(
         Uuid $userId,
         DateTimeImmutable $from,

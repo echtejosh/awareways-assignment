@@ -2,11 +2,17 @@ import { ApiRequestError, type ApiErrorPayload } from "@/infrastructure/http/api
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "/api"
 
+/**
+ * Prefixes relative API paths with the configured base URL or Vite proxy path.
+ */
 function withBaseUrl(path: string): string {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`
   return `${API_BASE_URL}${normalizedPath}`
 }
 
+/**
+ * Parses JSON only when the backend actually returned a JSON payload.
+ */
 async function parseJsonResponse(response: Response): Promise<unknown> {
   const contentType = response.headers.get("content-type") ?? ""
 
@@ -17,6 +23,9 @@ async function parseJsonResponse(response: Response): Promise<unknown> {
   return response.json()
 }
 
+/**
+ * Shared JSON fetch wrapper that normalizes API errors into ApiRequestError.
+ */
 export async function fetchJson<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(withBaseUrl(path), {
     headers: {
@@ -39,4 +48,3 @@ export async function fetchJson<T>(path: string, init?: RequestInit): Promise<T>
 
   return parsed as T
 }
-

@@ -12,6 +12,9 @@ use DateInterval;
 use DateTimeImmutable;
 use DateTimeZone;
 
+/**
+ * Builds the metrics query window and delegates aggregation to the read repository.
+ */
 final readonly class GetEngagementMetrics
 {
     public function __construct(
@@ -19,6 +22,9 @@ final readonly class GetEngagementMetrics
     ) {
     }
 
+    /**
+     * Defaults the metrics window to the last 30 days when no explicit range is supplied.
+     */
     public function __invoke(MetricsQuery $query): EngagementMetrics
     {
         $to = $query->to !== null
@@ -36,9 +42,11 @@ final readonly class GetEngagementMetrics
         );
     }
 
+    /**
+     * Converts incoming date filters to UTC before repository access.
+     */
     private static function toUtcDateTime(string $value): DateTimeImmutable
     {
         return (new DateTimeImmutable($value))->setTimezone(new DateTimeZone('UTC'));
     }
 }
-

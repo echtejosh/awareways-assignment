@@ -18,6 +18,9 @@ import {
 } from "@/features/ingest/submitted-event-request"
 import { NoUserSelectedState } from "@/features/user/components/NoUserSelectedState"
 
+/**
+ * Ingestion page combining the create-event form with the request/response inspector.
+ */
 export function IngestPage() {
   const { userId, hasUserId, isValidUserId } = useUserIdParam()
   const [lastResponse, setLastResponse] = useState<Activity | null>(null)
@@ -110,6 +113,9 @@ export function IngestPage() {
   )
 }
 
+/**
+ * Re-shapes the UI activity entity back into the API response contract for display purposes.
+ */
 function mapResponseActivity(activity: Activity) {
   return {
     id: activity.id,

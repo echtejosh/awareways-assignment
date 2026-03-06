@@ -27,6 +27,9 @@ type UserPickerProps = {
 
 const RESULT_LIMIT = 12
 
+/**
+ * Searchable user combobox used by the sidebar and empty-state flows.
+ */
 export function UserPicker({
   userId,
   onSelect,
@@ -83,12 +86,18 @@ export function UserPicker({
     }
   }, [isOpen, selectedLabel])
 
+  /**
+   * Delays closing so dropdown item clicks can complete after the input loses focus.
+   */
   function scheduleClose() {
     blurTimeoutRef.current = window.setTimeout(() => {
       setIsOpen(false)
     }, 120)
   }
 
+  /**
+   * Cancels any pending close timer when focus returns to the control.
+   */
   function cancelClose() {
     if (blurTimeoutRef.current !== null) {
       window.clearTimeout(blurTimeoutRef.current)
@@ -96,24 +105,36 @@ export function UserPicker({
     }
   }
 
+  /**
+   * Opens the suggestion list and clears the draft so the user can start a fresh search.
+   */
   function openSearch() {
     cancelClose()
     setDraft("")
     setIsOpen(true)
   }
 
+  /**
+   * Applies the selected user to the URL-backed page scope.
+   */
   function handleSelectUser(user: UserSummary) {
     setDraft(user.name)
     onSelect(user.id)
     setIsOpen(false)
   }
 
+  /**
+   * Switches from picker mode into the create-user modal flow.
+   */
   function openCreateUser() {
     cancelClose()
     setIsOpen(false)
     setIsCreateOpen(true)
   }
 
+  /**
+   * Auto-selects a newly created user after the dialog succeeds.
+   */
   function handleCreated(user: UserSummary) {
     setDraft(user.name)
     onSelect(user.id)

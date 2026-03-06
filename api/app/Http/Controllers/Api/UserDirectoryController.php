@@ -11,8 +11,14 @@ use App\Http\Requests\Api\SearchUsersRequest;
 use App\Http\Resources\Api\ActivityUserResource;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * Exposes the activity user directory for UI search and selection flows.
+ */
 final class UserDirectoryController extends Controller
 {
+    /**
+     * Returns matching users together with the applied search metadata.
+     */
     public function __invoke(
         SearchUsersRequest $request,
         SearchUsers $searchUsers,

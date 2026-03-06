@@ -12,6 +12,9 @@ use App\Domain\Events\ValueObjects\Uuid;
 use DateTimeImmutable;
 use DateTimeZone;
 
+/**
+ * Normalizes raw ingestion input into a domain event and delegates persistence.
+ */
 final readonly class IngestEvent
 {
     public function __construct(
@@ -19,6 +22,9 @@ final readonly class IngestEvent
     ) {
     }
 
+    /**
+     * Records a new event with normalized UUID, enum, and UTC timestamp values.
+     */
     public function __invoke(IngestEventData $data): ActivityEvent
     {
         $event = ActivityEvent::record(
@@ -31,9 +37,11 @@ final readonly class IngestEvent
         return $this->eventIngestionRepository->save($event);
     }
 
+    /**
+     * Converts incoming client timestamps to a single UTC baseline.
+     */
     private static function toUtcDateTime(string $value): DateTimeImmutable
     {
         return (new DateTimeImmutable($value))->setTimezone(new DateTimeZone('UTC'));
     }
 }
-

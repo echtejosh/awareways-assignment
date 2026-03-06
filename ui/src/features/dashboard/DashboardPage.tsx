@@ -20,6 +20,9 @@ import {
   getUserMetricsUseCase,
 } from "@/infrastructure/di/container"
 
+/**
+ * Dashboard entry page that composes the metrics cards, timeline, and activity table.
+ */
 export function DashboardPage() {
   const [searchParams] = useSearchParams()
   const { userId, userIdObject, hasUserId, isValidUserId } = useUserIdParam()

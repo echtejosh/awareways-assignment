@@ -14,6 +14,9 @@ import {
 } from "@/components/ui/accordion"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
+/**
+ * Static endpoint documentation model used to render the in-app API reference page.
+ */
 type EndpointDoc = {
   id: string
   title: string
@@ -210,6 +213,9 @@ const endpointDocs: EndpointDoc[] = [
   },
 ]
 
+/**
+ * In-app API reference page mirroring the routes currently exposed by the Laravel backend.
+ */
 export function ApiDocumentationPage() {
   return (
     <div className="space-y-5">
@@ -316,6 +322,9 @@ export function ApiDocumentationPage() {
   )
 }
 
+/**
+ * Compact visual indicator for endpoint HTTP methods.
+ */
 function MethodBadge({ method }: { method: EndpointDoc["method"] }) {
   const variant = method === "GET" ? "secondary" : "default"
 

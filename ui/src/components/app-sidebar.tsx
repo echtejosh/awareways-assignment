@@ -16,6 +16,9 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
+/**
+ * Preserves the selected user when moving between routed pages.
+ */
 function userQuerySearch(userId: string): string {
   if (!userId) {
     return ""
@@ -25,6 +28,9 @@ function userQuerySearch(userId: string): string {
   return `?${params.toString()}`
 }
 
+/**
+ * Primary navigation shell containing the user picker and route links.
+ */
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const location = useLocation()
   const [searchParams] = useSearchParams()

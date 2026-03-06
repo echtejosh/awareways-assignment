@@ -4,6 +4,9 @@ import type {
   MetricsFilters,
 } from "@/domain/events/repositories/event-repository"
 
+/**
+ * Reads the aggregate metrics model for one user.
+ */
 export class GetUserMetricsUseCase {
   private readonly eventRepository: EventRepository
 
@@ -11,6 +14,9 @@ export class GetUserMetricsUseCase {
     this.eventRepository = eventRepository
   }
 
+  /**
+   * Delegates the metrics query to the repository port.
+   */
   execute(userId: UserId, filters: MetricsFilters) {
     return this.eventRepository.getMetrics(userId, filters)
   }

@@ -25,6 +25,9 @@ type CreateUserDialogProps = {
   initialName?: string
 }
 
+/**
+ * Modal used wherever the UI needs to create a new activity user directory entry.
+ */
 export function CreateUserDialog({
   open,
   onOpenChange,
@@ -60,6 +63,9 @@ export function CreateUserDialog({
     },
   })
 
+  /**
+   * Validates the local form state before delegating to the create-user mutation.
+   */
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const normalizedName = name.trim()

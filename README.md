@@ -9,8 +9,6 @@ The assignment asks for a way to bridge raw activity records and a final represe
 - a lightweight SQLite-backed persistence model
 - a clean-architecture split in both API and UI layers
 
-This is intentionally an MVP. The goal was to produce a coherent, working vertical slice in a few hours, not a feature-complete production platform.
-
 ## Stack
 
 - PHP 8.3
@@ -423,7 +421,7 @@ The system would need:
 
 ### Projections
 
-The current MVP computes metrics directly from persisted events.
+The current assignment implementation computes metrics directly from persisted events.
 
 A production version would likely maintain dedicated read models such as:
 

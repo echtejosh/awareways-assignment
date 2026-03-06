@@ -14,9 +14,14 @@ use DateTimeImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
+/**
+ * Builds the dashboard read models directly from persisted activity events.
+ */
 final readonly class EloquentEventReadRepository implements EventReadRepository
 {
     /**
+     * Returns the newest matching events for a single user, ordered by occurrence time.
+     *
      * @return array<int, ActivityEvent>
      */
     public function listRecentActivities(
@@ -99,6 +104,9 @@ final readonly class EloquentEventReadRepository implements EventReadRepository
         );
     }
 
+    /**
+     * Applies a closed date window to the shared base query used by metrics aggregation.
+     */
     private function applyDateRange(
         Builder $query,
         DateTimeImmutable $from,
@@ -109,6 +117,9 @@ final readonly class EloquentEventReadRepository implements EventReadRepository
             ->where('occurred_at', '<=', $to);
     }
 
+    /**
+     * Maps the Eloquent row back into the immutable domain entity used by the application layer.
+     */
     private function mapToEntity(ActivityEventModel $row): ActivityEvent
     {
         return new ActivityEvent(

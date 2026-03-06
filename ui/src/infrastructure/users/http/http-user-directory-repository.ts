@@ -12,6 +12,9 @@ import type {
 } from "@/infrastructure/users/http/contracts"
 import { fetchJson } from "@/infrastructure/http/fetch-json"
 
+/**
+ * Serializes optional directory search params while skipping empty values.
+ */
 function queryString(params: Record<string, string | number | undefined>): string {
   const searchParams = new URLSearchParams()
 
@@ -27,6 +30,9 @@ function queryString(params: Record<string, string | number | undefined>): strin
   return serialized ? `?${serialized}` : ""
 }
 
+/**
+ * Maps transport DTOs to the UI user summary entity.
+ */
 function mapUserSummary(dto: UserSummaryApiDto): UserSummary {
   return {
     id: dto.id,
@@ -34,7 +40,13 @@ function mapUserSummary(dto: UserSummaryApiDto): UserSummary {
   }
 }
 
+/**
+ * HTTP-backed implementation of the user directory repository port.
+ */
 export class HttpUserDirectoryRepository implements UserDirectoryRepository {
+  /**
+   * Queries the backend user directory for picker suggestions.
+   */
   async searchUsers(input: SearchUsersInput): Promise<UserSummary[]> {
     const qs = queryString({
       search: input.search?.trim().toLowerCase(),
@@ -45,6 +57,9 @@ export class HttpUserDirectoryRepository implements UserDirectoryRepository {
     return response.data.map(mapUserSummary)
   }
 
+  /**
+   * Creates a new backend user directory entry.
+   */
   async createUser(input: CreateUserInput): Promise<UserSummary> {
     const payload: CreateUserApiRequest = {
       name: input.name,

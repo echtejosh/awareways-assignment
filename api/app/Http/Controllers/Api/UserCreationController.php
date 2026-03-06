@@ -11,8 +11,14 @@ use App\Http\Requests\Api\CreateUserRequest;
 use App\Http\Resources\Api\ActivityUserResource;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * Creates activity directory users that can later be selected in the UI.
+ */
 final class UserCreationController extends Controller
 {
+    /**
+     * Persists a new directory entry and returns the generated identifier.
+     */
     public function __invoke(
         CreateUserRequest $request,
         CreateUser $createUser,

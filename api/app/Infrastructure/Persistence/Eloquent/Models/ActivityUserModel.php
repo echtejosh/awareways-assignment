@@ -6,6 +6,9 @@ namespace App\Infrastructure\Persistence\Eloquent\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Eloquent persistence model for the selectable activity user directory.
+ */
 final class ActivityUserModel extends Model
 {
     protected $table = 'activity_users';

@@ -58,6 +58,9 @@ type FormErrors = {
   "payload.points"?: string
 }
 
+/**
+ * Main event creation form used by the ingest page.
+ */
 export function IngestEventForm({
   userId,
   onSuccessResponse,
@@ -108,6 +111,9 @@ export function IngestEventForm({
     return '{\n  "training_id": "safety-101"\n}'
   }, [eventType])
 
+  /**
+   * Builds a cURL preview from the current form state without mutating the request inspector state.
+   */
   const curlPreview = useMemo(() => {
     const result = buildSubmittedEventRequest({
       userId,
@@ -130,6 +136,9 @@ export function IngestEventForm({
     }
   }, [eventType, occurredDate, occurredTime, payloadText, userId])
 
+  /**
+   * Surfaces the currently selected event type first so example payloads stay context-aware.
+   */
   const orderedPayloadExamples = useMemo(() => {
     return [
       eventType,
@@ -142,6 +151,9 @@ export function IngestEventForm({
     }))
   }, [eventType])
 
+  /**
+   * Validates and submits the form using the same normalized request shape shown in the inspector.
+   */
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setFormErrors({})
@@ -322,6 +334,9 @@ export function IngestEventForm({
   )
 }
 
+/**
+ * Converts raw form inputs into the normalized event request sent to the backend.
+ */
 function buildSubmittedEventRequest({
   userId,
   eventType,
@@ -382,6 +397,9 @@ function buildSubmittedEventRequest({
   }
 }
 
+/**
+ * Combines the selected date and time controls into the ISO timestamp expected by the API.
+ */
 function buildOccurredAtIso(date: Date | undefined, time: string): string | null {
   if (!date || !/^\d{2}:\d{2}$/.test(time)) {
     return null

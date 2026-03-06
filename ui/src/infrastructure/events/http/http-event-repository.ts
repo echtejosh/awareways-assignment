@@ -19,6 +19,9 @@ import type {
 } from "@/infrastructure/events/http/contracts"
 import { fetchJson } from "@/infrastructure/http/fetch-json"
 
+/**
+ * Serializes optional query filters while skipping empty values.
+ */
 function queryString(params: Record<string, string | number | undefined>): string {
   const searchParams = new URLSearchParams()
 
@@ -33,6 +36,9 @@ function queryString(params: Record<string, string | number | undefined>): strin
   return serialized ? `?${serialized}` : ""
 }
 
+/**
+ * Translates backend DTO field names into the UI domain entity shape.
+ */
 function mapActivity(dto: ActivityApiDto): Activity {
   return {
     id: dto.id,
@@ -44,7 +50,13 @@ function mapActivity(dto: ActivityApiDto): Activity {
   }
 }
 
+/**
+ * HTTP-backed implementation of the event repository port.
+ */
 export class HttpEventRepository implements EventRepository {
+  /**
+   * Loads the recent activity slice for the selected user.
+   */
   async getActivities(
     userId: UserId,
     filters: ActivityFilters
@@ -71,6 +83,9 @@ export class HttpEventRepository implements EventRepository {
     }
   }
 
+  /**
+   * Loads the aggregate metrics contract consumed by the dashboard cards.
+   */
   async getMetrics(userId: UserId, filters: MetricsFilters): Promise<Metrics> {
     const qs = queryString({
       from: filters.from,
@@ -96,6 +111,9 @@ export class HttpEventRepository implements EventRepository {
     }
   }
 
+  /**
+   * Sends one activity event to the ingestion endpoint.
+   */
   async createEvent(command: CreateEventCommand): Promise<Activity> {
     const payload: CreateEventApiRequest = {
       user_id: command.userId.toString(),

@@ -10,6 +10,9 @@ const defaultDashboardPath = defaultUserId
   ? `/dashboard?user_id=${encodeURIComponent(defaultUserId)}`
   : "/dashboard"
 
+/**
+ * Main application router. Every page renders inside the shared sidebar layout.
+ */
 export const router = createBrowserRouter([
   {
     path: "/",

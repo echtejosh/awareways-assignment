@@ -18,6 +18,9 @@ type NoUserSelectedStateProps = {
   description: string
 }
 
+/**
+ * Shared empty state shown by feature pages before a user has been selected.
+ */
 export function NoUserSelectedState({
   title,
   description,
@@ -25,6 +28,9 @@ export function NoUserSelectedState({
   const applyUserId = useApplyUserIdParam()
   const [isCreateOpen, setIsCreateOpen] = useState(false)
 
+  /**
+   * Applies the freshly created user immediately so the current page becomes actionable.
+   */
   function handleCreated(user: UserSummary) {
     applyUserId(user.id)
   }
