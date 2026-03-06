@@ -1,13 +1,4 @@
-# Awareways Technical Assignment
-
-This repository implements a small event ingestion and dashboard system for user activity.
-
-The assignment asks for a way to bridge raw activity records and a final representation the Product team can consume. This implementation does that with:
-
-- a Laravel API for ingestion and query access
-- a React UI for dashboard and event creation
-- a lightweight SQLite-backed persistence model
-- a clean-architecture split in both API and UI layers
+# Awareways Assignment
 
 ## Stack
 
@@ -96,7 +87,7 @@ Useful URLs after seeding:
 
 ### Local Development
 
-The project is designed primarily around Docker Compose for this assignment. Local setup is still straightforward, but Docker is the intended reviewer path.
+Docker Compose is the intended way to run this project for review. Local setup is possible, but Docker is the main path.
 
 ## Usage Examples
 
@@ -209,7 +200,7 @@ Example response:
 }
 ```
 
-The request is rejected, not persisted, and logged to the dedicated ingestion log channel.
+The request is rejected, not stored, and logged to the ingestion channel.
 
 ### 5. Get Recent Activities
 
@@ -281,13 +272,13 @@ UI routes:
 - `/dashboard?user_id=<uuid>`
 - `/ingest?user_id=<uuid>`
 
-The sidebar user picker queries `/api/users`, supports inline search, and always exposes a `Create User` action that opens the same modal used by the page-level empty states. When no user is selected, both the dashboard and ingest pages explain how to create a user first or select an existing one.
+The sidebar user picker uses `/api/users`, supports search, and always includes a `Create User` action. If no user is selected, both the dashboard and ingest pages explain how to create one or choose an existing one.
 
 ## Project Structure Overview
 
 ### API
 
-The Laravel API is organized with a clean-architecture split:
+The Laravel API is split into these layers:
 
 - `api/app/Domain`
   - pure domain contracts, entities, enums, and value objects
@@ -308,7 +299,7 @@ Important files:
 
 ### UI
 
-The React UI mirrors the same separation:
+The React UI follows the same structure:
 
 - `ui/src/domain`
   - entities, repository interfaces, value objects
@@ -332,7 +323,7 @@ Important files:
 
 ### Why This Data Model
 
-The assignment is event-oriented, so the data model is event-oriented as well.
+The assignment is based on activity events, so the data model follows the same shape.
 
 The core table stores:
 
@@ -343,24 +334,24 @@ The core table stores:
 - `payload`
 - `ingested_at`
 
-This keeps the write model close to the incoming domain facts instead of prematurely over-modeling derived concepts. It also keeps the stored records flexible enough to support multiple event types with different payloads.
+This keeps the write model close to the events coming into the system. It also keeps the records flexible enough to support different event types and payloads.
 
-In addition to event storage, there is now a dedicated `activity_users` directory. That keeps user selection and creation separate from raw activity data, and it avoids deriving the selectable user list from whatever events happen to already exist.
+There is also a dedicated `activity_users` directory. This keeps user selection and creation separate from raw activity data, and it avoids building the user list from existing events.
 
 ### Why SQLite
 
-SQLite is appropriate for the assignment constraints:
+SQLite fits the assignment well because it is:
 
 - fast to bootstrap
 - no external database dependency
 - migration-friendly
 - sufficient for local filtering, ordering, and basic aggregation
 
-For this assignment, it reduces setup friction without obscuring the core design choices.
+It keeps setup simple while still supporting the required queries.
 
 ### How Invalid or Dirty Data Is Handled
 
-Invalid payloads are rejected at the API boundary.
+Invalid payloads are rejected during request validation.
 
 Current behavior:
 
@@ -373,11 +364,11 @@ Example rule:
 - `points_scored` requires `payload.points >= 1`
 - `user_id` must exist in `activity_users`
 
-That keeps the stored event data queryable and consistent.
+This keeps the stored event data consistent.
 
 ## Trade-offs
 
-This implementation deliberately cuts scope to stay within the assignment timebox.
+Some parts are intentionally simplified to fit the assignment timebox.
 
 What was intentionally simplified:
 
@@ -389,13 +380,13 @@ What was intentionally simplified:
 - limited event type set tied to the assignment examples
 - no broad automated test suite in the current submission state
 
-The goal was to prioritize a working end-to-end system with clean boundaries over production completeness.
+The goal was to build a working end-to-end system with clear boundaries, not a production-ready platform.
 
 ## Production Vision
 
-If this had to process 5 million events a day continuously, the architecture would change materially.
+If this needed to process 5 million events a day continuously, the architecture would need to change.
 
-The main shift would be separating ingestion from query storage.
+The main change would be separating ingestion from query storage.
 
 ### Production-direction architecture
 
@@ -407,7 +398,7 @@ The main shift would be separating ingestion from query storage.
 
 ### Why change it this way
 
-At that scale, direct request-time writes and on-demand aggregation from the same store are not the right shape.
+At that scale, direct request-time writes and on-demand aggregation from the same store would not be enough.
 
 The system would need:
 
@@ -421,7 +412,7 @@ The system would need:
 
 ### Projections
 
-The current assignment implementation computes metrics directly from persisted events.
+The current assignment implementation calculates metrics directly from stored events.
 
 A production version would likely maintain dedicated read models such as:
 
@@ -429,7 +420,7 @@ A production version would likely maintain dedicated read models such as:
 - user metrics projection
 - daily activity summary projection
 
-That avoids recalculating dashboard values independently in multiple places and keeps query latency predictable.
+That avoids recalculating dashboard values in multiple places and helps keep query speed predictable.
 
 ## Current Submission State
 
@@ -442,9 +433,3 @@ Implemented:
 - ingestion validation and logging
 - dashboard metrics and timeline
 - ingest response body viewer
-
-Still worth adding after this submission pass:
-
-- formal automated API tests
-- a clean submission checklist pass
-- broader end-to-end smoke coverage
